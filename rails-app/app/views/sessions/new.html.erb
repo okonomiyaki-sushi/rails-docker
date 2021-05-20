@@ -1,0 +1,16 @@
+<%= form_with(url: login_path, scope: :session, local: true, class: "w-50 mx-auto border p-3 mb-3 border-radius") do |f| %>
+  
+  <div>
+    <%= f.label :email, 'メールアドレス' %>
+    <%= f.email_field :email, class: 'form-control' %>
+  </div>
+  
+  <div>
+    <%= f.label :password, 'パスワード' %>
+    <%= f.password_field :password, class: 'form-control' %>
+  </div>
+  
+  <%= f.submit 'ログイン', class: "btn btn-primary button-block mt-3" %>
+<% end %>
+
+<p class="text-center">新規登録はコチラ <%= link_to 'Here we go!!', signup_path %></p>

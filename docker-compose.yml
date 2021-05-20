@@ -1,0 +1,44 @@
+version: '3'
+services:
+  db:
+    build:
+      context: .
+      dockerfile: "dockerfiles/db/Dockerfile"
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - '3306:3306'
+  web: &web
+    build:
+      context: .
+      dockerfile: "dockerfiles/web/Dockerfile"
+    environment:
+      RAILS_ENV: development
+      NODE_ENV: development
+      WEBPACKER_DEV_SERVER_HOST: webpacker
+    ports:
+      - '3000:3000'
+    # コンテナ起動時のデフォルトのコマンドを指定(指定がない場合は /bin/bash になる)
+    command: "../init_shell/web/init.sh"
+    #command: "bash"
+    # docker-compose up 後にコンテナを起動し続けるためのオプション
+    tty: true
+    # コンテナ外から接続するためのオプション
+    stdin_open: true
+    # コンテナがホスト上のすべてのデバイスにアクセスできるためのオプション
+    privileged: false
+    # ホストPCのフォルダ:コンテナのフォルダ というようにマウントする
+    volumes:
+      - ./rails-app:/rails-app
+      - ./init_shell:/init_shell
+    links:
+      - db
+    depends_on:
+      - db
+  webpacker:
+    <<: *web
+    environment:
+      WEBPACKER_DEV_SERVER_HOST: "0.0.0.0"
+    command: "../init_shell/webpacker/init.sh"
+    ports:
+      - '3035:3035'

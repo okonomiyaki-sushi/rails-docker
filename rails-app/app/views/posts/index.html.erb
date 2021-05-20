@@ -1,0 +1,42 @@
+<div class="border p-2 mb-2 border-radius">
+  <%= render "form", post: @post, btn_name: "投稿", btn_class: "btn btn-primary" %>
+</div>
+
+<div class="border p-2 border-radius">
+  <%= search_form_for @q do |f| %>
+    <div class="flex">
+    <%= f.search_field :content_cont, class: "form-control" %>
+    <%= f.submit "検索", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+  
+  <% if @posts.present? %>
+    <table class="table table-bordered mt-2">
+      <thead>
+      <tr>
+        <th>投稿内容</th>
+        <th>投稿者</th>
+        <th>投稿日時</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        <% login_user_id = current_user.id %>
+        <% @posts.each do |post| %>
+          <tr>
+            <td><%= post.content %></td>
+            <td><%= post.user.name %></td>
+            <td><%= post.created_at %></td>
+            <td>
+              <% if login_user_id == post.user_id %>
+                <%= link_to '編集', edit_post_path(post), class: 'btn btn-success btn-sm' %>
+                <%= link_to '削除', post, method: :delete, data: { confirm: "削除しますか?" }, class: 'btn btn-danger btn-sm' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%== pagy_bootstrap_nav(@pagy) %>
+  <% end %>
+</div>

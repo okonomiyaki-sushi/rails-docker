@@ -1,0 +1,16 @@
+<%= form_with(model: post, local: true) do |f| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% post.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="flex">
+    <%= f.text_field :content, class: "form-control" %>
+    <%= f.submit btn_name, class: btn_class %>
+  </div>
+<% end %>

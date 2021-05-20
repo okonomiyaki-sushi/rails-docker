@@ -1,0 +1,13 @@
+.margin-left-auto {
+  margin-left: auto;
+}
+.button-block {
+  display: block;
+  width: 100%;
+}
+.flex {
+  display: flex;
+}
+.border-radius{
+  border-radius: 5px;
+}
